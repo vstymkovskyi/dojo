@@ -1,0 +1,145 @@
+body {
+    background-color: azure;
+}
+
+.bodyClassic {
+    background-color: azure;
+    background: linear-gradient(to right, azure, aliceblue);
+}
+
+.bodyGoth {
+    background-color: gray;
+    background: linear-gradient(to right, black, gray, black);
+}
+
+.bodyWeapons {
+    background-color: red;
+    background: linear-gradient(to right, red, yellow, red);
+}
+
+.infoContainer {
+    display: grid;
+    grid-gap: auto;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    grid-template-columns: 33% 33% 33%;
+    text-align: center;
+}
+
+.infoBox {
+    background-color: lightgray;
+    color: black;
+    padding: 10px;
+    border: 5px solid transparent;
+}
+
+.gameContainer {
+    display: grid;
+    margin-top: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 100px 100px 100px;
+//background-color: azure;
+//border: 5px solid blue;
+    text-align: center;
+}
+
+.gameContainer > .blue {
+    background-color: blue;
+    color: white;
+    padding: 20px;
+    font-size: 48px;
+}
+
+.gameContainer > .red {
+    background-color: red;
+    color: white;
+    padding: 20px;
+    font-size: 48px;
+}
+
+.gameContainer > .gray {
+    background-color: gray;
+    color: purple;
+    padding: 20px;
+    font-size: 48px;
+}
+
+.gameContainer > div {
+    border: 2px solid blue;
+    border-radius: 25px;
+    background-color: lightgray;
+    padding: 35px;
+    color: green;
+}
+
+.center {
+    text-align: center;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.orangeBorder {
+    border: 5px solid orange;
+}
+
+.classicHeader {
+    font-style: normal;
+    color: black;
+}
+
+.gothHeader {
+    font-style: italic;
+    color: white;
+    text-shadow: 5px 5px 10px purple;
+}
+
+.weaponsHeader {
+    font-style: normal;
+    color: green;
+    text-shadow: 1px 1px 1px black;
+    text-transform: uppercase;
+}
+
+.yellowBig {
+    background-color: yellow;
+    font-size: 36px;
+}
+
+.redBig {
+    background-color: red;
+    font-size: 36px;
+}
+
+.red {
+    background-color: red;
+}
+
+#resetButton {
+    background-color: blue;
+    color: white;
+    font-size: 16px;
+    border: 2px solid blue;
+}
+
+#resetButton:hover {
+    background-color: white;
+    color: blue;
+}
+
+.displayNone {
+    display: none;
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+fieldset {
+    border: 0;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: Hello Dojo!</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+          crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link href="./css/index.css" rel="stylesheet">
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1 id="greeting">Hello</h1>
+    <!-- configure Dojo -->
+    <script src="./app/config.js"></script>
+    <!-- load Dojo -->
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+    <script src="./app/index.js"></script>
+
+    <h3>
+        <div id="gameStyle" class="center">classic</div>
+    </h3>
+
+    <h3>
+        <form id="playerForm" class="center">
+            <div>
+                Choose your game style:
+                <br><br>
+            </div>
+
+            <fieldset id="group1">
+                <input type="radio" name="group1" value="classic" checked="checked">Classic
+                <input type="radio" name="group1" value="goth">Goth
+                <input type="radio" name="group1" value="weapons">Weapons
+            </fieldset>
+
+            <br><br>
+
+            <div>
+                Would you like to be X or O?
+                <br><br>
+            </div>
+
+
+            <fieldset id="group2">
+                <input type="radio" name="group2" value="X">X
+                <input type="radio" name="group2" value="O">O
+            </fieldset>
+
+        </form>
+    </h3>
+
+    <h3>
+        <div id="playerOne" class="center"></div>
+    </h3>
+
+    <div id="gameResult" class="center"></div>
+    <div id="congratsOrSorry" class="center"></div>
+
+    <section id="gameInfo" class="infoContainer displayNone">
+        <div id="yourTurn" class="infoBox">your turn</div>
+        <button id="resetButton" class="infoBox">Reset Game</button>
+        <div id="compTurn" class="infoBox">computer's turn</div>
+    </section>
+
+    <div id="counter" class="center displayNone"></div>
+
+    <section id="gameGrid" class="gameContainer displayNone">
+        <div class="item item-1" id='one'>X/O</div>
+        <div class="item item-2" id='two'>X/O</div>
+        <div class="item item-3" id='three'>X/O</div>
+
+        <div class="item item-4" id='four'>X/O</div>
+        <div class="item item-5" id='five'>X/O</div>
+        <div class="item item-6" id='six'>X/O</div>
+
+        <div class="item item-7" id='seven'>X/O</div>
+        <div class="item item-8" id='eight'>X/O</div>
+        <div class="item item-9" id='nine'>X/O</div>
+    </section>
+
+
+</body>
+</html>
