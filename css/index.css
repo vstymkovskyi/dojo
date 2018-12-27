@@ -42,8 +42,8 @@ body {
     margin-right: 10%;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 100px 100px 100px;
-//background-color: azure;
-//border: 5px solid blue;
+    background-color: azure;
+    border: 5px solid blue;
     text-align: center;
 }
 

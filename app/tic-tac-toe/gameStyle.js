@@ -64,4 +64,6 @@ class GameStyle {
     $("#header").addClass("weaponsHeader").removeClass("classicHeader gothHeader");
     $(body).addClass("bodyWeapons").removeClass("bodyGoth bodyClassic")
   }
+
+
 }
