@@ -131,7 +131,7 @@ class Board {
       document.getElementById("playerForm").reset();
       $("#playerOne, #gameResult, #congratsOrSorry").html("");
       $("#gameInfo, #gameGrid, #congratsOrSorry").addClass("displayNone");
-      this.gameStyle.styleClassic();
+      this.gameStyle.setGameStyle('classic');
     } else {
       console.log("reset: resetting game, for new game...");
       $("#gameInfo").removeClass("displayNone");
@@ -166,8 +166,6 @@ class Board {
       return document.getElementById("playerOneSpan").innerHTML;
     }
   }
-
-
 
   checkForWinner() {
     console.log("checking for winner...");
