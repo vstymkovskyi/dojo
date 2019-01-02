@@ -1,40 +1,63 @@
 define([
-  'dojo/dom',
-], function (dom) {
-  return GameStyle;
-});
-
-class GameStyle {
-
-  constructor() {
-    this.body = document.body;
-    this.activeStyle = 'classic';
-    this.styles = {
-        'classic': 'bodyClassic',
-        'goth': 'bodyGoth',
-        'weapons': 'bodyWeapons'
-    };
-    this.changeGameStyle();
-    this.setGameStyle('classic');
-  }
-
-  changeGameStyle() {
-    const self = this;
-    $("#change-style input[name='change-style']").on("change", function() {
-      if(self.styles[this.value]) {
-          self.setGameStyle(this.value);
-      } else {
-        console.error('You have selected incorrect style.');
+  "dojo/_base/declare",
+  'dojo/query',
+  'dojo/dom-class',
+  'dojo/_base/window',
+], function (declare, query, domClass, win) {
+  return declare('GameStyle', null, {
+    body: null,
+    activeStyle: 'classic',
+    styles: {
+      'classic': {
+        style: 'bodyClassic',
+        iconX: 'X',
+        iconO: 'O',
+      },
+      'goth': {
+        style: 'bodyGoth',
+        iconX: '☠️',
+        iconO: '💀'
+      },
+      'weapons': {
+        style: 'bodyWeapons',
+        iconX: '⚔️',
+        iconO: '💣',
+      },
+    },
+    changeStyleCallback: null,
+    
+    constructor() {
+      this.body = win.body();
+      this.setGameStyle('classic');
+      this.handleChangeGameStyle();
+    },
+  
+    handleChangeGameStyle() {
+      const self = this;
+      query("input[name='change-style']").onchange(function() {
+        if(self.styles[this.value]) {
+          self.setGameStyle(this.value, true);
+        } else {
+          console.error('You have selected incorrect style.');
+        }
+      });
+    },
+    
+    getGameStyle() {
+      return this.activeStyle;
+    },
+    
+    setGameStyle(type, callback = false) {
+      this.activeStyle = type;
+      domClass.remove(this.body);
+      domClass.add(this.body, this.styles[type].style);
+      if(callback && this.changeStyleCallback && typeof this.changeStyleCallback === "function") {
+        this.changeStyleCallback();
       }
-    });
-  };
-
-  getGameStyle() {
-    return this.activeStyle;
-  };
-
-  setGameStyle(type) {
-    this.activeStyle = type;
-    $(this.body).removeClass().addClass(this.styles[type]);
-  }
-}
+    },
+    
+    getStyledIcon(side) {
+      return this.styles[this.activeStyle]['icon'+side];
+    },
+  });
+});

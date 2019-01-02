@@ -7,17 +7,21 @@
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
           crossorigin="anonymous">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+
     <link href="./css/index.css" rel="stylesheet">
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+
+    <!-- Latest compiled and minified JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 </head>
 <body>
@@ -27,68 +31,91 @@
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
     <script src="./app/index.js"></script>
 
-    <h3>
-        <div id="gameStyle" class="center">classic</div>
-    </h3>
-
-    <h3>
-        <form id="playerForm" class="center">
-            <div>
-                Choose your game style:
-                <br><br>
-            </div>
-
-            <fieldset id="change-style">
-                <input type="radio" name="change-style" value="classic" checked="checked">Classic
-                <input type="radio" name="change-style" value="goth">Goth
-                <input type="radio" name="change-style" value="weapons">Weapons
+    <div id="configuration" class="jumbotron">
+        <form id="playerForm" class="container">
+            <fieldset id="names" class="row form-group">
+                <div class="row">
+                    <h4>Please fill names</h4>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input id="player_name" type="text" name="player_name" value="" placeholder="Your name" maxlength="128" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input id="ai_name" type="text" name="ai_name" value="" placeholder="Opponent name" maxlength="128" class="form-control" />
+                    </div>
+                </div>
+                <input id="chooseStyle" type="button" value="Next step" class="btn btn-primary" />
             </fieldset>
 
-            <br><br>
+            <fieldset id="change-style" class="row form-group invisible">
+                <div class="row">
+                    <h4>Choose your game style</h4>
+                </div>
+                <div class="row">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="change-style" id="classicStyle" value="classic"/>
+                        <label class="form-check-label" for="classicStyle">Classic</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="change-style" id="gothStyle" value="goth"/>
+                        <label class="form-check-label" for="gothStyle">Goth</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="change-style" id="weaponsStyle" value="weapons"/>
+                        <label class="form-check-label" for="weaponsStyle">Weapons</label>
+                    </div>
+                </div>
+            </fieldset>
 
-            <div>
-                Would you like to be X or O?
-                <br><br>
-            </div>
-
-
-            <fieldset id="group2">
-                <input type="radio" name="group2" value="X">X
-                <input type="radio" name="group2" value="O">O
+            <fieldset id="select-side" class="row form-group invisible">
+                <div class="row">
+                    <h4>Would you like to be X or O?</h4>
+                </div>
+                <div class="row">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="select-side" id="sideX" value="1"/>
+                        <label class="form-check-label" for="sideX">X</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="select-side" id="sideO" value="0"/>
+                        <label class="form-check-label" for="sideO">O</label>
+                    </div>
+                </div>
             </fieldset>
 
         </form>
-    </h3>
+    </div>
 
-    <h3>
+    <div class="gameWrapper">
         <div id="playerOne" class="center"></div>
-    </h3>
 
-    <div id="gameResult" class="center"></div>
-    <div id="congratsOrSorry" class="center"></div>
+        <div id="gameResult" class="center"></div>
+        <div id="congratsOrSorry" class="center"></div>
 
-    <section id="gameInfo" class="infoContainer displayNone">
-        <div id="yourTurn" class="infoBox">your turn</div>
-        <button id="resetButton" class="infoBox">Reset Game</button>
-        <div id="compTurn" class="infoBox">computer's turn</div>
-    </section>
+        <section id="gameInfo" class="infoContainer displayNone">
+            <button id="yourTurn" type="button" class="btn btn-warning">Your turn</button>
 
-    <div id="counter" class="center displayNone"></div>
+            <button id="resetButton" type="button" class="btn btn-danger mx-2">Reset Game</button>
 
-    <section id="gameGrid" class="gameContainer displayNone">
-        <div class="item item-1" id='one'>X/O</div>
-        <div class="item item-2" id='two'>X/O</div>
-        <div class="item item-3" id='three'>X/O</div>
+            <button id="compTurn" type="button" class="btn">AI turn</button>
+        </section>
 
-        <div class="item item-4" id='four'>X/O</div>
-        <div class="item item-5" id='five'>X/O</div>
-        <div class="item item-6" id='six'>X/O</div>
+        <div id="counter" class="center displayNone"></div>
 
-        <div class="item item-7" id='seven'>X/O</div>
-        <div class="item item-8" id='eight'>X/O</div>
-        <div class="item item-9" id='nine'>X/O</div>
-    </section>
+        <section id="gameGrid" class="gameContainer displayNone">
+            <div class="board-item board-item-1" id='one'>X/O</div>
+            <div class="board-item board-item-2" id='two'>X/O</div>
+            <div class="board-item board-item-3" id='three'>X/O</div>
 
+            <div class="board-item board-item-4" id='four'>X/O</div>
+            <div class="board-item board-item-5" id='five'>X/O</div>
+            <div class="board-item board-item-6" id='six'>X/O</div>
 
+            <div class="board-item board-item-7" id='seven'>X/O</div>
+            <div class="board-item board-item-8" id='eight'>X/O</div>
+            <div class="board-item board-item-9" id='nine'>X/O</div>
+        </section>
+    </div>
 </body>
 </html>

@@ -19,7 +19,6 @@ body {
 
 .infoContainer {
     display: grid;
-    grid-gap: auto;
     margin-left: 5%;
     margin-right: 5%;
     padding-left: 10%;
@@ -80,58 +79,6 @@ body {
     text-align: center;
 }
 
-.yellow {
-    background-color: yellow;
-}
-
-.orangeBorder {
-    border: 5px solid orange;
-}
-
-.classicHeader {
-    font-style: normal;
-    color: black;
-}
-
-.gothHeader {
-    font-style: italic;
-    color: white;
-    text-shadow: 5px 5px 10px purple;
-}
-
-.weaponsHeader {
-    font-style: normal;
-    color: green;
-    text-shadow: 1px 1px 1px black;
-    text-transform: uppercase;
-}
-
-.yellowBig {
-    background-color: yellow;
-    font-size: 36px;
-}
-
-.redBig {
-    background-color: red;
-    font-size: 36px;
-}
-
-.red {
-    background-color: red;
-}
-
-#resetButton {
-    background-color: blue;
-    color: white;
-    font-size: 16px;
-    border: 2px solid blue;
-}
-
-#resetButton:hover {
-    background-color: white;
-    color: blue;
-}
-
 .displayNone {
     display: none;
 }
@@ -140,6 +87,21 @@ body {
     pointer-events: none;
 }
 
-fieldset {
-    border: 0;
+.bigFont {
+    font-size: 36px;
+}
+
+
+.red {
+    background-color: red;
+}
+.blue {
+    background-color: blue;
+}
+.yellow {
+    background-color: yellow;
+}
+
+.select-side-hidden {
+    opacity: 0;
 }
