@@ -1,7 +1,12 @@
-body {
-    background-color: azure;
+html, body {
+    height: 100%;
 }
 
+.gameWrapper {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
 .bodyClassic {
     background-color: azure;
     background: linear-gradient(to right, azure, aliceblue);
@@ -10,6 +15,7 @@ body {
 .bodyGoth {
     background-color: gray;
     background: linear-gradient(to right, black, gray, black);
+    color: #ffffff;
 }
 
 .bodyWeapons {
@@ -17,66 +23,21 @@ body {
     background: linear-gradient(to right, red, yellow, red);
 }
 
-.infoContainer {
-    display: grid;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-left: 10%;
-    padding-right: 10%;
-    grid-template-columns: 33% 33% 33%;
-    text-align: center;
+.list-group-item:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-.infoBox {
-    background-color: lightgray;
-    color: black;
-    padding: 10px;
-    border: 5px solid transparent;
-}
-
-.gameContainer {
-    display: grid;
-    margin-top: 2%;
-    margin-left: 10%;
-    margin-right: 10%;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 100px 100px 100px;
-    background-color: azure;
-    border: 5px solid blue;
-    text-align: center;
-}
-
-.gameContainer > .blue {
-    background-color: blue;
-    color: white;
-    padding: 20px;
-    font-size: 48px;
-}
-
-.gameContainer > .red {
-    background-color: red;
-    color: white;
-    padding: 20px;
-    font-size: 48px;
-}
-
-.gameContainer > .gray {
-    background-color: gray;
-    color: purple;
-    padding: 20px;
-    font-size: 48px;
-}
-
-.gameContainer > div {
-    border: 2px solid blue;
-    border-radius: 25px;
-    background-color: lightgray;
-    padding: 35px;
-    color: green;
-}
-
-.center {
-    text-align: center;
+.board-container {
+    background-color: #e5e5e5;
+    position: relative;
+    max-height: 78vh;
+    margin: auto;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
 }
 
 .displayNone {
@@ -87,21 +48,82 @@ body {
     pointer-events: none;
 }
 
-.bigFont {
-    font-size: 36px;
+.board-row {
+    height: 150px;
+    height: 25vmin;
 }
 
+.board-item {
+    border: 2px solid #222;
+}
+.board-item:first-of-type {
+    border-left-color: transparent;
+    border-top-color: transparent;
+}
+.board-item:nth-of-type(2) {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+.board-item:nth-of-type(3) {
+    border-right-color: transparent;
+    border-top-color: transparent;
+}
 
-.red {
-    background-color: red;
-}
-.blue {
-    background-color: blue;
-}
-.yellow {
-    background-color: yellow;
+.board-row:nth-of-type(3) .board-item {
+    border-bottom-color: transparent;
 }
 
-.select-side-hidden {
-    opacity: 0;
+.x:before {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    content: "";
+    display: block;
+    width: 7px;
+    width: 1.5vmin;
+    height: 150px;
+    height: 25vmin;
+    background-color: #10A0E1;
+    border-radius: 5px;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.x:after {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    content: "";
+    display: block;
+    width: 7px;
+    width: 1.5vmin;
+    height: 150px;
+    height: 25vmin;
+    background-color: #10A0E1;
+    border-radius: 5px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.o {
+    position: absolute;
+    top:  50%;
+    left: 50%;
+    width: 120px;
+    width: 20vmin;
+    height: 120px;
+    height: 20vmin;
+    border: 8px solid #E110A0;
+    border: 1.5vmin solid #E110A0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+.board-item-icon {
+    font-size: 50px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
 }

@@ -8,8 +8,10 @@ define([
   'dojo/fx',
   'dojo/_base/fx',
   'dojo/dom-style',
-], function (declare, dom, html, query, domClass, on, fx, baseFx, domStyle) {
+  'dojo/dom-construct',
+], function (declare, dom, html, query, domClass, on, fx, baseFx, domStyle, domConstruct) {
   return declare('Board', null, {
+    gameID: null,
     playerSide: null,
     AISide: null,
     players: {
@@ -25,7 +27,8 @@ define([
       }
     },
 
-    constructor(gameStyle) {
+    constructor(gameID, gameStyle) {
+      this.gameID = gameID;
       this.gameStyle = gameStyle;
       this.gameStyle.changeStyleCallback = this.handleSideButtons;
     
@@ -37,16 +40,12 @@ define([
     handleSelectSide() {
       const self = this;
       query("input[name='select-side']").onchange(function() {
-        
         self.playerSide = this.value;
         self.AISide     = $("input[name='select-side']:not(:checked)").val();
         
         self.players[self.playerSide].name = dom.byId('player_name').value;
         self.players[self.AISide].name = dom.byId('ai_name').value;
-  
-        $("#playerForm").addClass("displayNone");
-        $("#playerOne").html(`You are: <span id="playerOneSpan" class="yellow">${self.players[self.playerSide].name}</span>`);
-        $("#gameInfo, #resetButton, #gameGrid").removeClass("displayNone");
+        self.showGameBoard();
       });
     },
   
@@ -54,10 +53,13 @@ define([
       const self        = this;
       const resetBtn    = dom.byId('resetButton');
       const selectStyle = dom.byId('chooseStyle');
+      const saveGameBtn = dom.byId('saveGame');
+      const loadGamesBtn = dom.byId('loadGames');
       
       on(resetBtn, "click", () => self.resetBoard(true));
       on(selectStyle, "click", () => self.checkNames());
-
+      on(saveGameBtn, "click", () => self.saveGame());
+      on(loadGamesBtn, "click", () => self.loadGames());
     },
   
     handleBoardClick() {
@@ -96,6 +98,12 @@ define([
       }
     },
     
+    showGameBoard() {
+      html.set(dom.byId('playerOne'), `You are: <span id="playerName">${this.players[this.playerSide].name}</span>`);
+      domClass.add(dom.byId('configuration'), 'displayNone');
+      domClass.remove(dom.byId('gameWrapper'), 'displayNone');
+    },
+    
     checkNames() {
       const styleSelect = dom.byId('change-style');
       const playerName  = dom.byId('player_name');
@@ -110,10 +118,8 @@ define([
     playGame() {//for this game, playerOne goes first
       const winner = this.checkForWinner();
       if (winner) {
-        console.log('game over, resetting game');
         setTimeout(this.resetBoard, 3000) //call reset after 3 seconds...
       } else {
-        console.log('no winner yet...');
         this.checkWhoseTurn();
       }
     },
@@ -131,18 +137,23 @@ define([
 
       if (playerTurn) {
         notBlueOrRed = query('.board-item:not(.blue):not(.red)');
-        domClass.remove(notBlueOrRed, 'gray unclickable');
+        dojo.map(notBlueOrRed, function (item) {
+          return domClass.remove(item, 'gray unclickable');
+        });
       } else {
         allItems = query('.board-item');
-        domClass.add(allItems, 'unclickable'); //need to remove this on player's turn
-        setTimeout(this.computerTakeTurn.bind(this), 1000); //call after 1 second...
+        dojo.map(allItems, function (item) {
+          return domClass.add(item, 'unclickable');
+        }); //need to remove this on player's turn
+
+        setTimeout(this.AITakeTurn.bind(this), 1000);
       }
   
       domClass.toggle(dom.byId('compTurn'), 'btn-warning');
       domClass.toggle(dom.byId('yourTurn'), 'btn-warning');
     },
   
-    computerTakeTurn() {
+    AITakeTurn() {
       const notBlueOrRed = query('.board-item:not(.blue):not(.red)');
       //choose one at random
       var randomItem = notBlueOrRed[Math.floor(Math.random() * notBlueOrRed.length)];
@@ -159,53 +170,44 @@ define([
     },
 
     countPoints(type) {
-      return $('#gameGrid .'+type).length;
+      return $('#boardContainer .'+type).length;
     },
   
     resetBoard(hard = false) {
-      const playerForm   = dom.byId("playerForm");
+      const configuration   = dom.byId("configuration");
+      const configurationForm = dom.byId("configurationForm");
       const styleButtons = dom.byId("change-style");
       const sideButtons  = dom.byId("select-side");
       const boardItems   = query('.board-item');
-
-      if(hard) {
-        domClass.remove(playerForm, 'displayNone');
-        playerForm.reset();
-        
-        html.set(dom.byId('playerOne'), '');
-        html.set(dom.byId('gameResult'), '');
-        html.set(dom.byId('congratsOrSorry'), '');
   
-        domClass.add(dom.byId('gameInfo'), 'displayNone');
-        domClass.add(dom.byId('gameGrid'), 'displayNone');
-        domClass.add(dom.byId('congratsOrSorry'), 'displayNone');
-        
-
+      html.set(dom.byId('gameResult'), '');
+      html.set(dom.byId('congratsOrSorry'), '');
+      domClass.remove(dom.byId('compTurn'), 'btn-warning');
+      domClass.add(dom.byId('yourTurn'), 'btn-warning');
+      
+      if(hard) {
+        configurationForm.reset();
+        domClass.add(dom.byId('gameWrapper'), 'displayNone');
         this.gameStyle.setGameStyle('classic');
+  
         domClass.add(styleButtons, 'invisible');
         domClass.add(sideButtons, 'invisible');
         domStyle.set(sideButtons, 'opacity', 0);
 
-      } else {
-        domClass.remove(dom.byId('gameInfo'), 'displayNone');
-        domClass.add(dom.byId('gameResult'), 'displayNone');
-        domClass.add(dom.byId('congratsOrSorry'), 'displayNone');
+        domClass.remove(configuration, 'displayNone');
       }
-      domClass.remove(dom.byId('compTurn'), 'btn-warning');
-      domClass.add(dom.byId('yourTurn'), 'btn-warning');
 
       dojo.map(boardItems, function (item) {
         domClass.remove(item, 'blue red gray unclickable');
-        return html.set(item, 'X/O');
+        return html.set(item, '');
       });
       
     },
 
     checkForWinner() {
-      console.log("checking for winner...");
-      var winner;
+      let winner;
     
-      var eightWinningCombos = [
+      const eightWinningCombos = [
         "#one.COLOR, #two.COLOR, #three.COLOR",
         "#four.COLOR, #five.COLOR, #six.COLOR",
         "#seven.COLOR, #eight.COLOR, #nine.COLOR",
@@ -242,8 +244,6 @@ define([
       if (draw) {
         this.drawGame();
         return winner = draw
-      } else {
-        console.log('game on...')
       }
     },
   
@@ -255,9 +255,16 @@ define([
     },
   
     displayWinner(winner, color) {
-      html.set(dom.byId('gameResult'), "<span class='"+color+" bigFont'>"+this.players[winner].name+" wins!</span>");
-      html.set(dom.byId('congratsOrSorry'), '<span class="'+color+'">Congratulations! You won!</span>');
+      html.set(dom.byId('gameResult'), "<span class='"+color+"'>"+this.players[winner].name+" wins!</span>");
+      let congratulations = 'Congratulations! You won!';
+      if(this.playerSide !== winner) {
+        congratulations = 'Sorry, you lose, try again.';
+      }
+      html.set(dom.byId('congratsOrSorry'), congratulations);
 
+      //remove saved game
+      this.removeGame(this.gameID);
+      
       return this.winLoseOrDraw();
     },
     
@@ -269,10 +276,6 @@ define([
     },
   
     winLoseOrDraw() {
-      domClass.remove(dom.byId('gameResult'), 'displayNone');
-      domClass.remove(dom.byId('congratsOrSorry'), 'displayNone');
-      domClass.add(dom.byId('gameInfo'), 'displayNone');
-
       return this.disableRemainingItems();
     },
   
@@ -280,11 +283,141 @@ define([
       const notBlueOrRed  = query('.board-item:not(.blue):not(.red)');
       dojo.map(notBlueOrRed, function (item) {
         domClass.add(item, 'gray unclickable');
-        return html.set(item, '🤷');
+        return html.set(item, '<div class="board-item-icon">🤷</div>');
       });
   
       return false;
     },
-  });
+    
+    saveGame() {
+      const boardItems = query('.board-item');
+      let boardArray = [
+        null,null,null,
+        null,null,null,
+        null,null,null
+      ];
+      let gamesArray = [];
+
+      dojo.map(boardItems, (item, i) => {
+        if(domClass.contains(item, 'red')) {
+          boardArray[i] = 'red'
+        } else if(domClass.contains(item, 'blue')) {
+          boardArray[i] = 'blue'
+        }
+      });
   
+      const gameObj = {
+        gameID: this.gameID,
+        boardArray: boardArray,
+        playerSide: this.playerSide,
+        AISide: this.AISide,
+        players: this.players,
+        gameStyleType: this.gameStyle.getGameStyle(),
+      };
+      
+      if(localStorage.getItem('Games')) {
+        let gamesData = localStorage.getItem('Games');
+        gamesArray = JSON.parse(gamesData);
+  
+        const gameData = gamesArray.findIndex(item => item.gameID === this.gameID);
+        //update existing game
+        if(gameData !== -1) {
+          gamesArray.splice(gameData, 1);
+        }
+        gamesArray.push(gameObj);
+      } else {
+        gamesArray.push(gameObj);
+      }
+      localStorage.setItem('Games', JSON.stringify(gamesArray));
+      alert('Game was saved');
+    },
+    
+    removeGame(id) {
+      if(localStorage.getItem('Games')) {
+        let gamesData = localStorage.getItem('Games');
+        let gamesArray = JSON.parse(gamesData);
+    
+        const gameData = gamesArray.findIndex(item => item.gameID === id);
+        //update existing game
+        if(gameData !== -1) {
+          gamesArray.splice(gameData, 1);
+          localStorage.setItem('Games', JSON.stringify(gamesArray));
+          alert('Game was removed because you have finished it.');
+        }
+      }
+    },
+  
+    loadGames() {
+      let gamesArray = [];
+      if(localStorage.getItem('Games')) {
+        let gamesData = localStorage.getItem('Games');
+        gamesArray = JSON.parse(gamesData);
+
+      }
+      
+      this.displaySavedGames(gamesArray);
+    },
+    
+    displaySavedGames(gamesArray) {
+      const wrapper = dom.byId('loadedGames');
+      domConstruct.empty("loadedGames");
+  
+      new Promise((resolve) => {
+        let output = '<ul class="list-group">';
+        dojo.map(gamesArray, (item) => {
+          output += '<li class="list-group-item loaded-game" data-id="'+item.gameID+'">';
+            output += '<div class="row">';
+              output += '<span class="col-3">ID: '+item.gameID+'</span>';
+              output += '<span class="col-3">Player: '+item.players[item.playerSide].name+'</span>';
+              output += '<span class="col-3">AI: '+item.players[item.AISide].name+'</span>';
+            output += '</div>';
+          
+          output += '</li>'
+        });
+        output += '</ul>';
+        domConstruct.place(output, wrapper);
+        resolve();
+      }).then(()=> {
+        const loadGameLI = query('.loaded-game');
+        on(loadGameLI, "click", (e) => this.restoreBoard(e));
+      });
+    },
+    
+    restoreBoard(e) {
+      const id = $(e.target).data('id');
+      const gamesData = localStorage.getItem('Games');
+      const gamesArray = JSON.parse(gamesData);
+  
+      const gameData = gamesArray.find(obj => obj.gameID === id);
+      const boardArray = gameData.boardArray;
+      const boardItems = query('.board-item');
+
+      this.gameID     = gameData.gameID;
+      this.playerSide = gameData.playerSide;
+      this.AISide     = gameData.AISide;
+      this.players    = gameData.players;
+
+      this.gameStyle.setGameStyle(gameData.gameStyleType);
+
+      let playerIcon = this.gameStyle.getStyledIcon(this.players[this.playerSide].side);
+      let AIIcon = this.gameStyle.getStyledIcon(this.players[this.AISide].side);
+
+      new Promise((resolve)=> {
+        dojo.map(boardItems, (item, i) => {
+          if(boardArray[i] !== null) {
+            domClass.add(item, boardArray[i]);
+      
+            if(domClass.contains(item, boardArray[i]) && boardArray[i] === this.players[this.playerSide].pointClass) {
+              return html.set(item, playerIcon);
+            } else {
+              return html.set(item, AIIcon);
+            }
+          }
+        });
+        resolve();
+      }).then(() => {
+        this.showGameBoard();
+      });
+    }
+  });
 });

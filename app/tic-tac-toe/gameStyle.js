@@ -1,33 +1,34 @@
 define([
+  'dojo/dom',
   "dojo/_base/declare",
   'dojo/query',
   'dojo/dom-class',
   'dojo/_base/window',
-], function (declare, query, domClass, win) {
+], function (dom, declare, query, domClass, win) {
   return declare('GameStyle', null, {
     body: null,
     activeStyle: 'classic',
     styles: {
       'classic': {
         style: 'bodyClassic',
-        iconX: 'X',
-        iconO: 'O',
+        iconX: '<div class="x"></div>',
+        iconO: '<div class="o"></div>',
       },
       'goth': {
         style: 'bodyGoth',
-        iconX: '☠️',
-        iconO: '💀'
+        iconX: '<div class="board-item-icon">☠</div>',
+        iconO: '<div class="board-item-icon">💀</div>'
       },
       'weapons': {
         style: 'bodyWeapons',
-        iconX: '⚔️',
-        iconO: '💣',
+        iconX: '<div class="board-item-icon">⚔</div>',
+        iconO: '<div class="board-item-icon">💣</div>',
       },
     },
     changeStyleCallback: null,
     
     constructor() {
-      this.body = win.body();
+      this.body = dom.byId('gameWrapper');
       this.setGameStyle('classic');
       this.handleChangeGameStyle();
     },
@@ -50,7 +51,7 @@ define([
     setGameStyle(type, callback = false) {
       this.activeStyle = type;
       domClass.remove(this.body);
-      domClass.add(this.body, this.styles[type].style);
+      domClass.add(this.body, 'gameWrapper displayNone '+this.styles[type].style);
       if(callback && this.changeStyleCallback && typeof this.changeStyleCallback === "function") {
         this.changeStyleCallback();
       }
