@@ -27,14 +27,20 @@ define([
       }
     },
 
-    constructor(gameID, gameStyle) {
-      this.gameID = gameID;
+    constructor(gameStyle) {
+      this.settupGameID();
       this.gameStyle = gameStyle;
       this.gameStyle.changeStyleCallback = this.handleSideButtons;
     
       this.handleButtonClicks();
       this.handleBoardClick();
       this.handleSelectSide();
+    },
+    
+    settupGameID() {
+      this.gameID = guid();
+      let gameIDfield = dom.byId('gameID');
+      $(gameIDfield).attr("value", this.gameID);
     },
   
     handleSelectSide() {
@@ -187,6 +193,8 @@ define([
       
       if(hard) {
         configurationForm.reset();
+        this.settupGameID();
+
         domClass.add(dom.byId('gameWrapper'), 'displayNone');
         this.gameStyle.setGameStyle('classic');
   
@@ -195,6 +203,8 @@ define([
         domStyle.set(sideButtons, 'opacity', 0);
 
         domClass.remove(configuration, 'displayNone');
+  
+        domConstruct.empty("loadedGames");
       }
 
       dojo.map(boardItems, function (item) {
@@ -352,7 +362,6 @@ define([
       if(localStorage.getItem('Games')) {
         let gamesData = localStorage.getItem('Games');
         gamesArray = JSON.parse(gamesData);
-
       }
       
       this.displaySavedGames(gamesArray);
@@ -363,6 +372,10 @@ define([
       domConstruct.empty("loadedGames");
   
       new Promise((resolve) => {
+        if(gamesArray.length === 0) {
+          domConstruct.place('<div>There are no saved games available. Please start a new one.</div>', wrapper);
+          resolve();
+        }
         let output = '<ul class="list-group">';
         dojo.map(gamesArray, (item) => {
           output += '<li class="list-group-item loaded-game" data-id="'+item.gameID+'">';
@@ -379,15 +392,18 @@ define([
         resolve();
       }).then(()=> {
         const loadGameLI = query('.loaded-game');
-        on(loadGameLI, "click", (e) => this.restoreBoard(e));
+        on(loadGameLI, "click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.restoreBoard(e)
+        });
       });
     },
     
     restoreBoard(e) {
-      const id = $(e.target).data('id');
+      const id = $(e.target).closest('.loaded-game').data('id');
       const gamesData = localStorage.getItem('Games');
       const gamesArray = JSON.parse(gamesData);
-  
       const gameData = gamesArray.find(obj => obj.gameID === id);
       const boardArray = gameData.boardArray;
       const boardItems = query('.board-item');
@@ -421,3 +437,7 @@ define([
     }
   });
 });
+
+function guid() {
+  return '_' + Math.random().toString(36).substr(2, 9);
+}
